@@ -5,6 +5,7 @@ services:
         hostname: 'IDS'
         privileged: true
         container_name : IDS
+        image: srx-labo-3
         build: .
         cap_add : 
             - NET_ADMIN 
@@ -29,6 +30,7 @@ services:
         hostname: 'Client'
         privileged: true
         container_name : Client
+        image: srx-labo-3
         build: .
         cap_add : 
             - NET_ADMIN
