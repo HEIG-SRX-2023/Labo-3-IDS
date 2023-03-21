@@ -63,7 +63,7 @@ utiliser "Hyper-V" au lieu de "WSL2". Il faut désactiver la configuration [Use 
 
 ## Démarrage de l'environnement virtuel
 
-Ce laboratoire utilise docker-compose, un outil pour la gestion d'applications utilisant multiples conteneurs. Il va se charger de créer un réseaux virtuel `snortlan`, la machine IDS, un client avec un navigateur Firefox, une machine "Client" et un conteneur Wireshark directement connecté à la même interface réseau que la machine IDS. Le réseau LAN interconnecte les autres 3 machines (voir schéma ci-dessous).
+Ce laboratoire utilise docker-compose, un outil pour la gestion d'applications utilisant multiples conteneurs. Il va se charger de créer un réseaux virtuel `snortlan`, la machine IDS, un client avec un navigateur Firefox, une machine "Client" et un conteneur Wireshark directement connecté à la même interface réseau que la machine IDS. C'est pour cela que les adresses IP du conteneur Wireshark et IDS sont identiques sur la figure en-dessous. Le réseau LAN interconnecte les autres 3 machines (voir schéma ci-dessous).
 
 ![Plan d'adressage](images/docker-snort.png)
 
@@ -343,7 +343,7 @@ Si Snort détecte un paquet qui correspond à une règle, il envoie un message d
 
 Le système envoie **les alertes vers le syslog** et il peut en option envoyer **les paquets "offensifs" vers une structure de repertoires**.
 
-Les alertes sont journalisées via syslog dans le fichier `/var/log/snort/alerts`. Toute alerte se trouvant dans ce fichier aura son paquet correspondant dans le même repertoire, mais sous le fichier `snort.log.xxxxxxxxxx` où `xxxxxxxxxx` est l'heure Unix du commencement du journal.
+Les alertes sont journalisées via syslog dans le fichier `/var/log/snort/alert`. Toute alerte se trouvant dans ce fichier aura son paquet correspondant dans le même repertoire, mais sous le fichier `snort.log.xxxxxxxxxx` où `xxxxxxxxxx` est l'heure Unix du commencement du journal.
 
 Avec la règle suivante :
 
@@ -352,7 +352,7 @@ alert tcp any any -> 192.168.220.0/24 111
 (content:"|00 01 86 a5|"; msg: "mountd access";)
 ```
 
-un message d'alerte est envoyé à syslog avec l'information "mountd access". Ce message est enregistré dans `/var/log/snort/alerts` et le vrai paquet responsable de l'alerte se trouvera dans un fichier dont le nom sera `/var/log/snort/snort.log.xxxxxxxxxx`.
+un message d'alerte est envoyé à syslog avec l'information "mountd access". Ce message est enregistré dans `/var/log/snort/alert` et le vrai paquet responsable de l'alerte se trouvera dans un fichier dont le nom sera `/var/log/snort/snort.log.xxxxxxxxxx`.
 
 Les fichiers log sont des fichiers binaires enregistrés en format pcap. Vous pouvez les ouvrir avec Wireshark ou les diriger directement sur la console avec la commande suivante :
 
